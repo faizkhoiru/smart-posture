@@ -10,6 +10,7 @@
 Proyek kuliah (Praktikum Konsep Jaringan, D3 Teknik Informatika PSDKU Lamongan, PENS). Status: **MVP / prototipe**.
 
 Alur singkat:
+
 1. Dua load cell 50 kg di kursi -> ESP32 menentukan kursi `occupied` / `empty` -> kirim via **MQTT**.
 2. Saat `occupied`, ESP32-CAM mengirim snapshot JPEG ke backend via **HTTP**.
 3. Backend (FastAPI) menjalankan **pose estimation** -> keypoints -> status postur.
@@ -21,6 +22,7 @@ Produk adalah **alat bantu kebiasaan ergonomi, BUKAN alat medis**, tidak mendiag
 ## 2. Ruang lingkup tugas AI
 
 ### Dikerjakan AI (software)
+
 - Backend FastAPI: REST API, MQTT subscriber, endpoint upload frame, WebSocket, database.
 - Modul pose estimation dan logika postur (di dalam backend).
 - PWA React: dashboard, skeleton, suara, kalibrasi, pengaturan, riwayat.
@@ -28,26 +30,30 @@ Produk adalah **alat bantu kebiasaan ergonomi, BUKAN alat medis**, tidak mendiag
 - Docker Compose, test, dokumentasi.
 
 ### BUKAN tugas AI (jangan dikerjakan, jangan diubah)
+
 - Firmware ESP32 / ESP32-CAM, wiring, desain mekanis, kalibrasi fisik load cell. Ini dikerjakan tim hardware.
 - Face recognition, identifikasi identitas, diagnosis medis, pengukuran sudut tulang belakang klinis.
 - Penyimpanan gambar mentah, analitik pihak ketiga, layanan cloud berbayar.
 - Dukungan multi-kursi / multi-pengguna (itu pasca-MVP). MVP = **satu kursi, satu pengguna**.
 
 ### Pembagian kerja
-Sesi ini hanya mengerjakan FRONTEND (folder pwa/). JANGAN membuat atau mengubah file di backend/,
-simulator/, mosquitto/. Backend dikerjakan orang lain. Untuk pengembangan, gunakan mock server di pwa/mock/.
+
+Sesi ini hanya mengerjakan BACKEND dan SIMULATOR (folder backend/, simulator/,
+mosquitto/, docker-compose.yml). JANGAN membuat atau mengubah file di pwa/.
+Frontend dikerjakan orang lain dan hanya bergantung pada docs/API_CONTRACT.md.
+Bila perlu mengubah kontrak, minta persetujuan dulu dan perbarui file itu.
 
 ## 3. Tech stack (tetap, jangan diganti tanpa persetujuan)
 
-| Lapisan | Teknologi |
-|---|---|
-| Backend | Python 3.11+, FastAPI, Pydantic v2, SQLAlchemy 2.x, uvicorn |
-| Database | SQLite (MVP); skema harus portabel ke PostgreSQL |
-| Messaging | MQTT (Mosquitto), klien `paho-mqtt` atau `aiomqtt` |
-| Pose | MediaPipe Pose + OpenCV (modul dalam backend) |
-| Frontend | React + Vite + TypeScript, Tailwind CSS, PWA (manifest + service worker) |
-| Infra | Docker Compose (backend + Mosquitto) |
-| Bahasa UI | Indonesia |
+| Lapisan   | Teknologi                                                                |
+| --------- | ------------------------------------------------------------------------ |
+| Backend   | Python 3.11+, FastAPI, Pydantic v2, SQLAlchemy 2.x, uvicorn              |
+| Database  | SQLite (MVP); skema harus portabel ke PostgreSQL                         |
+| Messaging | MQTT (Mosquitto), klien `paho-mqtt` atau `aiomqtt`                       |
+| Pose      | MediaPipe Pose + OpenCV (modul dalam backend)                            |
+| Frontend  | React + Vite + TypeScript, Tailwind CSS, PWA (manifest + service worker) |
+| Infra     | Docker Compose (backend + Mosquitto)                                     |
+| Bahasa UI | Indonesia                                                                |
 
 ## 4. Struktur repo
 
@@ -71,6 +77,7 @@ smart-posture/
 ## 5. Aturan WAJIB (tidak boleh dilanggar)
 
 ### Privasi dan keselamatan
+
 1. **Jangan simpan frame/gambar mentah** ke disk atau database. Proses di memori lalu buang.
    Pengecualian debugging hanya bila diaktifkan eksplisit lewat env `DEBUG_SAVE_FRAMES=true`
    (default `false`) dan harus ada retensi + peringatan di log.
@@ -80,14 +87,16 @@ smart-posture/
 5. Jangan pernah menaruh secret (API key, password) di kode atau frontend. Gunakan `.env`.
 
 ### Kebenaran status (anti-halusinasi sistem)
+
 6. Jangan keluarkan `bad_posture` dari satu frame. Wajib: multi-frame + durasi toleransi.
 7. Bila tubuh tidak terlihat / confidence rendah -> `pose_unavailable`, **bukan** `bad_posture`.
 8. Bila backend/inferensi/perangkat gagal -> `analysis_unavailable` / `offline` / `sensor_error`.
    **Jangan mengarang** status postur.
 9. Tombol "Saya mengerti" di PWA hanya mencatat acknowledgment, **bukan** bukti postur baik/buruk.
-10. Nilai berat dari load cell berstatus *estimasi* bila belum dikalibrasi; jangan tampilkan sebagai akurat.
+10. Nilai berat dari load cell berstatus _estimasi_ bila belum dikalibrasi; jangan tampilkan sebagai akurat.
 
 ### Kontrak dan perubahan
+
 11. **Jangan mengubah** nama topik MQTT, bentuk payload, endpoint, atau pesan WebSocket
     tanpa memperbarui `docs/API_CONTRACT.md` dan meminta persetujuan pengguna terlebih dahulu.
 12. Jangan mengubah skema database tanpa menyertakan migrasi (atau penjelasan reset DB) dan memberi tahu pengguna.
@@ -96,12 +105,14 @@ smart-posture/
 ## 6. Batasan perilaku AI
 
 **Tanya dulu (minta konfirmasi) sebelum:**
+
 - mengubah kontrak API / skema DB / struktur folder utama,
 - menambah dependensi atau layanan baru,
 - menghapus atau menimpa file yang sudah ada isinya,
 - memilih nilai ambang postur final (default boleh dipakai, tandai sebagai "perlu validasi").
 
 **Dilarang:**
+
 - menjalankan perintah destruktif (`rm -rf` di luar folder build/cache, `git push --force`, reset database tanpa izin),
 - mengklaim fitur selesai tanpa menjalankan test/verifikasi,
 - mengerjakan fase berikutnya sebelum fase saat ini diverifikasi,

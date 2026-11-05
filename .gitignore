@@ -11,3 +11,8 @@ dist/
 *.png
 !pwa/public/**
 !docs/**
+
+# Model binary & temporary artifacts
+*.task
+backend/app/pose_landmarker_lite.task
+/tmp/debug_frames/
