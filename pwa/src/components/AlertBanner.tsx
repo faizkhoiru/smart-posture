@@ -19,12 +19,12 @@ export const AlertBanner: React.FC<AlertBannerProps> = ({
   // 1. Prioritas tertinggi: WebSocket putus
   if (connectionStatus === 'disconnected' || connectionStatus === 'reconnecting') {
     return (
-      <div className="bg-rose-950/80 border-b border-rose-600/40 px-4 py-3 text-rose-200">
-        <div className="max-w-4xl mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
+      <div className="bg-rose-950/70 backdrop-blur-xl border-b border-rose-500/30 px-4 py-3 text-rose-200">
+        <div className="max-w-5xl mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2.5">
           <div className="flex items-center gap-2.5">
             <span className="w-2.5 h-2.5 rounded-full bg-rose-500 animate-ping shrink-0" />
             <div className="text-xs sm:text-sm">
-              <span className="font-semibold text-rose-100">
+              <span className="font-semibold text-white">
                 {connectionStatus === 'reconnecting'
                   ? `Koneksi Server Terputus (Mencoba ulang #${reconnectCount})...`
                   : 'Koneksi Server Terputus.'}
@@ -35,9 +35,9 @@ export const AlertBanner: React.FC<AlertBannerProps> = ({
           {onRetryConnection && (
             <button
               onClick={onRetryConnection}
-              className="px-3 py-1 bg-rose-800/80 hover:bg-rose-700/80 text-white rounded text-xs font-medium border border-rose-500/40 transition shrink-0"
+              className="px-3.5 py-1 bg-white text-slate-950 hover:bg-slate-200 rounded-full text-xs font-bold transition shrink-0 shadow-sm"
             >
-              Coba Sambung Sekarang
+              Hubungkan Ulang
             </button>
           )}
         </div>
@@ -48,11 +48,11 @@ export const AlertBanner: React.FC<AlertBannerProps> = ({
   // 2. Hardware offline
   if (deviceStatus === 'offline') {
     return (
-      <div className="bg-amber-950/80 border-b border-amber-600/40 px-4 py-2.5 text-amber-200">
-        <div className="max-w-4xl mx-auto flex items-center gap-2.5 text-xs sm:text-sm">
+      <div className="bg-amber-950/60 backdrop-blur-xl border-b border-amber-500/30 px-4 py-2.5 text-amber-200">
+        <div className="max-w-5xl mx-auto flex items-center gap-2.5 text-xs sm:text-sm">
           <span className="w-2 h-2 rounded-full bg-amber-400 shrink-0" />
           <div>
-            <strong className="text-amber-100">Perangkat IoT Offline:</strong> Tidak ada sinyal heartbeat dari kursi.
+            <strong className="text-white">Perangkat IoT Offline:</strong> Tidak ada sinyal dari kursi.
             Pastikan ESP32 terhubung ke Wi-Fi dan daya aktif.
           </div>
         </div>
@@ -63,12 +63,12 @@ export const AlertBanner: React.FC<AlertBannerProps> = ({
   // 3. Hardware sensor error
   if (deviceStatus === 'sensor_error') {
     return (
-      <div className="bg-rose-950/80 border-b border-rose-600/40 px-4 py-2.5 text-rose-200">
-        <div className="max-w-4xl mx-auto flex items-center gap-2.5 text-xs sm:text-sm">
+      <div className="bg-rose-950/60 backdrop-blur-xl border-b border-rose-500/30 px-4 py-2.5 text-rose-200">
+        <div className="max-w-5xl mx-auto flex items-center gap-2.5 text-xs sm:text-sm">
           <span className="w-2 h-2 rounded-full bg-rose-400 shrink-0" />
           <div>
-            <strong className="text-rose-100">Gangguan Sensor Kursi:</strong> Load cell atau sirkuit timbangan kursi melaporkan error.
-            Deteksi okupansi dinonaktifkan sementara.
+            <strong className="text-white">Gangguan Sensor Kursi:</strong> Load cell kursi melaporkan error.
+            Deteksi beban dinonaktifkan sementara.
           </div>
         </div>
       </div>
@@ -78,12 +78,12 @@ export const AlertBanner: React.FC<AlertBannerProps> = ({
   // 4. Analisis tidak tersedia
   if (analysisStatus === 'analysis_unavailable') {
     return (
-      <div className="bg-yellow-950/80 border-b border-yellow-600/40 px-4 py-2.5 text-yellow-200">
-        <div className="max-w-4xl mx-auto flex items-center gap-2.5 text-xs sm:text-sm">
-          <span className="w-2 h-2 rounded-full bg-yellow-400 shrink-0" />
+      <div className="bg-purple-950/60 backdrop-blur-xl border-b border-purple-500/30 px-4 py-2.5 text-purple-200">
+        <div className="max-w-5xl mx-auto flex items-center gap-2.5 text-xs sm:text-sm">
+          <span className="w-2 h-2 rounded-full bg-purple-400 shrink-0" />
           <div>
-            <strong className="text-yellow-100">Analisis Postur Tidak Tersedia:</strong> Modul pose backend mengalami kendala atau beban penuh.
-            Status postur tidak dapat dipastikan saat ini.
+            <strong className="text-white">Analisis Postur Tidak Tersedia:</strong> Modul pose backend sedang mengalami kendala.
+            Status postur tidak dapat dinilai saat ini.
           </div>
         </div>
       </div>
@@ -92,4 +92,3 @@ export const AlertBanner: React.FC<AlertBannerProps> = ({
 
   return null;
 };
-

@@ -6,6 +6,10 @@ export default {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+        mono: ['"JetBrains Mono"', 'monospace']
+      },
       colors: {
         posture: {
           good: "#10B981",    // Emerald / Green
@@ -18,4 +22,3 @@ export default {
   },
   plugins: [],
 }
-

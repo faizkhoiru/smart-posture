@@ -109,10 +109,15 @@ export default function App(): React.JSX.Element {
     }
   };
 
-  const deviceName = deviceInfo?.name ?? 'Kursi Cerdas IoT';
+  const deviceName = deviceInfo?.name ?? 'Kursi Cerdas Utama (Lab IoT)';
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans selection:bg-indigo-500 selection:text-white">
+    <div className="min-h-screen bg-[#06070b] bg-dot-grid text-slate-100 flex flex-col font-sans relative overflow-x-hidden selection:bg-purple-600 selection:text-white">
+      {/* Ethereal Glow Waves (Inspired by Google Stitch Aurora Glow) */}
+      <div className="fixed -bottom-48 -left-48 w-[500px] h-[500px] bg-purple-600/15 rounded-full blur-[150px] pointer-events-none -z-10" />
+      <div className="fixed -bottom-48 -right-48 w-[500px] h-[500px] bg-blue-600/15 rounded-full blur-[150px] pointer-events-none -z-10" />
+      <div className="fixed top-12 left-1/2 -translate-x-1/2 w-[700px] h-72 bg-indigo-500/10 rounded-full blur-[130px] pointer-events-none -z-10" />
+
       {/* Modal Persetujuan Pemantauan Awal (Privasi) */}
       <ConsentModal isOpen={isConsentOpen} onAccept={handleConsentAccept} />
 
@@ -136,7 +141,7 @@ export default function App(): React.JSX.Element {
       />
 
       {/* Konten Halaman */}
-      <main className="flex-1 max-w-4xl w-full mx-auto p-4 sm:p-6">
+      <main className="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6">
         {currentTab === 'dashboard' && (
           <DashboardPage
             state={latestState}
@@ -167,7 +172,7 @@ export default function App(): React.JSX.Element {
         )}
       </main>
 
-      {/* Bottom Bar Navigation */}
+      {/* Floating Pill Navigation Dock */}
       <Navigation currentTab={currentTab} onTabChange={setCurrentTab} />
     </div>
   );

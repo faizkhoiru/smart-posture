@@ -23,7 +23,7 @@ const wss = new WebSocketServer({ noServer: true });
 app.use(cors());
 app.use(express.json());
 
-const PORT = 8000;
+const PORT = Number(process.env.PORT) || 8090;
 const DEVICE_ID = 'spc-001';
 
 export type ScenarioType =

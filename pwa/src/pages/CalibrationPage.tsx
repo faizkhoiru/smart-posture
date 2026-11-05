@@ -91,19 +91,34 @@ export const CalibrationPage: React.FC<CalibrationPageProps> = ({ state, deviceI
   };
 
   return (
-    <div className="space-y-4 pb-20">
-      <div className="bg-slate-900/80 border border-slate-800 rounded-2xl p-5 sm:p-6 shadow-sm">
-        {/* Header Wizard */}
-        <div className="border-b border-slate-800 pb-4 mb-5">
+    <div className="space-y-6 pb-28 pt-2 sm:pt-6">
+      {/* Page Title */}
+      <div className="text-center space-y-2 max-w-xl mx-auto">
+        <h1 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-white">
+          Wizard Kalibrasi
+        </h1>
+        <p className="text-xs sm:text-sm text-slate-400">
+          Sesuaikan sensor load cell dan sudut acuan postur tegak tubuh Anda dalam 3 langkah mudah.
+        </p>
+      </div>
+
+      <div className="bg-[#0c0d16]/80 backdrop-blur-2xl border border-white/10 rounded-3xl p-6 sm:p-8 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.8)]">
+        {/* Header Wizard & Progress Bar */}
+        <div className="border-b border-white/10 pb-5 mb-6">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-lg font-bold text-slate-100">Wizard Kalibrasi Perangkat</h2>
+              <h2 className="text-base sm:text-lg font-bold text-white tracking-tight">
+                {currentStep === 1 && 'Langkah 1: Titik Nol (Tare)'}
+                {currentStep === 2 && 'Langkah 2: Beban Duduk (Scale)'}
+                {currentStep === 3 && 'Langkah 3: Baseline Postur Tegak'}
+                {currentStep === 4 && 'Kalibrasi Selesai'}
+              </h2>
               <p className="text-xs text-slate-400 mt-0.5">
-                Panduan 3 langkah untuk menyesuaikan sensor beban dan acuan postur tegak Anda.
+                {currentStep <= 3 ? 'Ikuti petunjuk pada setiap langkah secara bertahap.' : 'Semua sensor berhasil terkalibrasi.'}
               </p>
             </div>
-            <span className="px-3 py-1 rounded-full text-xs font-mono font-medium bg-indigo-500/10 text-indigo-400 border border-indigo-500/30">
-              {currentStep <= 3 ? `Langkah ${currentStep} dari 3` : 'Selesai'}
+            <span className="px-3 py-1 rounded-full text-xs font-mono font-semibold bg-white/10 text-purple-300 border border-purple-500/30">
+              {currentStep <= 3 ? `Langkah ${currentStep} / 3` : 'Selesai'}
             </span>
           </div>
 
@@ -111,17 +126,17 @@ export const CalibrationPage: React.FC<CalibrationPageProps> = ({ state, deviceI
           <div className="grid grid-cols-3 gap-2 mt-4">
             <div
               className={`h-1.5 rounded-full transition-all ${
-                currentStep >= 1 ? 'bg-indigo-500' : 'bg-slate-800'
+                currentStep >= 1 ? 'bg-gradient-to-r from-purple-500 to-indigo-500 shadow-[0_0_8px_#a855f7]' : 'bg-white/10'
               }`}
             />
             <div
               className={`h-1.5 rounded-full transition-all ${
-                currentStep >= 2 ? 'bg-indigo-500' : 'bg-slate-800'
+                currentStep >= 2 ? 'bg-gradient-to-r from-purple-500 to-indigo-500 shadow-[0_0_8px_#a855f7]' : 'bg-white/10'
               }`}
             />
             <div
               className={`h-1.5 rounded-full transition-all ${
-                currentStep >= 3 ? 'bg-indigo-500' : 'bg-slate-800'
+                currentStep >= 3 ? 'bg-gradient-to-r from-purple-500 to-indigo-500 shadow-[0_0_8px_#a855f7]' : 'bg-white/10'
               }`}
             />
           </div>
@@ -129,7 +144,7 @@ export const CalibrationPage: React.FC<CalibrationPageProps> = ({ state, deviceI
 
         {/* Notifikasi Error Ramah */}
         {errorMessage && (
-          <div className="mb-4 p-3.5 bg-rose-950/60 border border-rose-500/40 rounded-xl text-xs text-rose-200 flex items-start justify-between gap-3 animate-fadeIn">
+          <div className="mb-5 p-4 bg-rose-950/60 border border-rose-500/40 rounded-2xl text-xs text-rose-200 flex items-start justify-between gap-3 animate-fadeIn">
             <div className="flex items-center gap-2">
               <span className="text-base shrink-0">⚠️</span>
               <span>{errorMessage}</span>
@@ -145,13 +160,13 @@ export const CalibrationPage: React.FC<CalibrationPageProps> = ({ state, deviceI
 
         {/* LANGKAH 1: Tare Kursi Kosong */}
         {currentStep === 1 && (
-          <div className="space-y-4 animate-fadeIn">
-            <div className="bg-slate-800/60 border border-slate-700/60 rounded-xl p-4 sm:p-5 space-y-3">
-              <div className="flex items-center gap-2.5">
-                <span className="w-7 h-7 rounded-lg bg-indigo-500/20 text-indigo-400 font-bold flex items-center justify-center text-xs">
+          <div className="space-y-5 animate-fadeIn">
+            <div className="bg-white/5 border border-white/5 rounded-2xl p-5 sm:p-6 space-y-3.5">
+              <div className="flex items-center gap-3">
+                <span className="w-8 h-8 rounded-full bg-purple-500/20 text-purple-300 font-bold flex items-center justify-center text-xs border border-purple-500/30">
                   1
                 </span>
-                <h3 className="text-sm sm:text-base font-semibold text-slate-100">
+                <h3 className="text-sm sm:text-base font-bold text-white">
                   Kalibrasi Kursi Kosong (Tare)
                 </h3>
               </div>
@@ -159,9 +174,9 @@ export const CalibrationPage: React.FC<CalibrationPageProps> = ({ state, deviceI
                 Pastikan kursi dalam keadaan <strong>benar-benar kosong</strong> tanpa beban tas, buku, atau orang.
                 Sistem akan mencatat nilai ADC tare dari kedua load cell sebagai titik acuan nol kilogram.
               </p>
-              <div className="p-3 bg-slate-900/60 rounded-lg border border-slate-800 text-xs text-slate-400 flex items-center justify-between">
+              <div className="p-3 bg-black/40 rounded-xl border border-white/5 text-xs text-slate-400 flex items-center justify-between">
                 <span>Status Okupansi Saat Ini:</span>
-                <span className="font-semibold text-slate-200 font-mono capitalize">
+                <span className="font-semibold text-white font-mono capitalize">
                   {state?.chair ?? 'empty'}
                 </span>
               </div>
@@ -171,11 +186,11 @@ export const CalibrationPage: React.FC<CalibrationPageProps> = ({ state, deviceI
               <button
                 onClick={handleStep1Tare}
                 disabled={loading}
-                className="w-full sm:w-auto px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 disabled:bg-slate-800 text-white disabled:text-slate-500 rounded-xl text-xs sm:text-sm font-semibold transition flex items-center justify-center gap-2 shadow"
+                className="w-full sm:w-auto px-6 py-2.5 bg-white text-slate-950 hover:bg-slate-200 disabled:bg-white/10 disabled:text-slate-500 rounded-full text-xs sm:text-sm font-bold transition flex items-center justify-center gap-2 shadow-lg shadow-white/10 active:scale-95"
               >
                 {loading ? (
                   <>
-                    <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    <span className="w-4 h-4 border-2 border-slate-900 border-t-transparent rounded-full animate-spin" />
                     <span>Merekam Titik Nol...</span>
                   </>
                 ) : (
@@ -188,13 +203,13 @@ export const CalibrationPage: React.FC<CalibrationPageProps> = ({ state, deviceI
 
         {/* LANGKAH 2: Duduki Kursi & Masukkan Bobot */}
         {currentStep === 2 && (
-          <div className="space-y-4 animate-fadeIn">
-            <div className="bg-slate-800/60 border border-slate-700/60 rounded-xl p-4 sm:p-5 space-y-3">
-              <div className="flex items-center gap-2.5">
-                <span className="w-7 h-7 rounded-lg bg-indigo-500/20 text-indigo-400 font-bold flex items-center justify-center text-xs">
+          <div className="space-y-5 animate-fadeIn">
+            <div className="bg-white/5 border border-white/5 rounded-2xl p-5 sm:p-6 space-y-3.5">
+              <div className="flex items-center gap-3">
+                <span className="w-8 h-8 rounded-full bg-purple-500/20 text-purple-300 font-bold flex items-center justify-center text-xs border border-purple-500/30">
                   2
                 </span>
-                <h3 className="text-sm sm:text-base font-semibold text-slate-100">
+                <h3 className="text-sm sm:text-base font-bold text-white">
                   Kalibrasi Beban Duduk (Scale Factor)
                 </h3>
               </div>
@@ -202,7 +217,7 @@ export const CalibrationPage: React.FC<CalibrationPageProps> = ({ state, deviceI
                 Silakan duduk di kursi dengan posisi normal. Masukkan bobot tubuh Anda (atau beban acuan yang digunakan) untuk mengkalibrasi faktor skala timbangan:
               </p>
 
-              <div className="space-y-1.5 pt-1">
+              <div className="space-y-1.5 pt-2">
                 <label className="text-xs text-slate-400 font-medium block">
                   Bobot Acuan Pengguna (kg)
                 </label>
@@ -214,19 +229,19 @@ export const CalibrationPage: React.FC<CalibrationPageProps> = ({ state, deviceI
                     step="0.5"
                     value={knownWeight}
                     onChange={(e) => setKnownWeight(e.target.value)}
-                    className="w-full bg-slate-900 border border-slate-700 rounded-lg px-3.5 py-2 text-sm text-slate-100 focus:outline-none focus:border-indigo-500 font-mono"
+                    className="w-full bg-black/50 border border-white/10 rounded-full px-4 py-2 text-sm text-white focus:outline-none focus:border-purple-500 font-mono"
                     placeholder="Contoh: 65"
                   />
-                  <span className="absolute right-3 top-2.5 text-xs text-slate-500">kg</span>
+                  <span className="absolute right-4 top-2.5 text-xs text-slate-500">kg</span>
                 </div>
               </div>
             </div>
 
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-2">
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
               <button
                 onClick={() => setCurrentStep(1)}
                 disabled={loading}
-                className="w-full sm:w-auto px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl text-xs font-medium transition"
+                className="w-full sm:w-auto px-5 py-2.5 bg-white/5 hover:bg-white/10 text-slate-300 rounded-full text-xs font-semibold transition border border-white/5"
               >
                 ← Kembali ke Langkah 1
               </button>
@@ -234,11 +249,11 @@ export const CalibrationPage: React.FC<CalibrationPageProps> = ({ state, deviceI
               <button
                 onClick={handleStep2Occupied}
                 disabled={loading}
-                className="w-full sm:w-auto px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 disabled:bg-slate-800 text-white disabled:text-slate-500 rounded-xl text-xs sm:text-sm font-semibold transition flex items-center justify-center gap-2 shadow"
+                className="w-full sm:w-auto px-6 py-2.5 bg-white text-slate-950 hover:bg-slate-200 disabled:bg-white/10 disabled:text-slate-500 rounded-full text-xs sm:text-sm font-bold transition flex items-center justify-center gap-2 shadow-lg shadow-white/10 active:scale-95"
               >
                 {loading ? (
                   <>
-                    <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    <span className="w-4 h-4 border-2 border-slate-900 border-t-transparent rounded-full animate-spin" />
                     <span>Mengkalibrasi Skala...</span>
                   </>
                 ) : (
@@ -251,13 +266,13 @@ export const CalibrationPage: React.FC<CalibrationPageProps> = ({ state, deviceI
 
         {/* LANGKAH 3: Rekam Baseline Postur Tegak */}
         {currentStep === 3 && (
-          <div className="space-y-4 animate-fadeIn">
-            <div className="bg-slate-800/60 border border-slate-700/60 rounded-xl p-4 sm:p-5 space-y-3">
-              <div className="flex items-center gap-2.5">
-                <span className="w-7 h-7 rounded-lg bg-indigo-500/20 text-indigo-400 font-bold flex items-center justify-center text-xs">
+          <div className="space-y-5 animate-fadeIn">
+            <div className="bg-white/5 border border-white/5 rounded-2xl p-5 sm:p-6 space-y-3.5">
+              <div className="flex items-center gap-3">
+                <span className="w-8 h-8 rounded-full bg-purple-500/20 text-purple-300 font-bold flex items-center justify-center text-xs border border-purple-500/30">
                   3
                 </span>
-                <h3 className="text-sm sm:text-base font-semibold text-slate-100">
+                <h3 className="text-sm sm:text-base font-bold text-white">
                   Perekaman Baseline Postur Tegak
                 </h3>
               </div>
@@ -266,7 +281,7 @@ export const CalibrationPage: React.FC<CalibrationPageProps> = ({ state, deviceI
                 Sistem akan memotret 10 frame berturut-turut untuk menentukan sudut referensi bahu dan kepala ideal Anda.
               </p>
 
-              <div className="p-3 bg-slate-900/60 rounded-lg border border-slate-800 text-xs text-slate-400 flex items-center justify-between">
+              <div className="p-3 bg-black/40 rounded-xl border border-white/5 text-xs text-slate-400 flex items-center justify-between">
                 <span>Kamera ESP32-CAM:</span>
                 <span className="font-semibold text-emerald-400 font-mono">
                   {state?.camera === 'on' ? 'Aktif' : 'Menunggu Pemicu'}
@@ -274,11 +289,11 @@ export const CalibrationPage: React.FC<CalibrationPageProps> = ({ state, deviceI
               </div>
             </div>
 
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-2">
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
               <button
                 onClick={() => setCurrentStep(2)}
                 disabled={loading}
-                className="w-full sm:w-auto px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl text-xs font-medium transition"
+                className="w-full sm:w-auto px-5 py-2.5 bg-white/5 hover:bg-white/10 text-slate-300 rounded-full text-xs font-semibold transition border border-white/5"
               >
                 ← Kembali ke Langkah 2
               </button>
@@ -286,11 +301,11 @@ export const CalibrationPage: React.FC<CalibrationPageProps> = ({ state, deviceI
               <button
                 onClick={handleStep3Posture}
                 disabled={loading}
-                className="w-full sm:w-auto px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 disabled:bg-slate-800 text-white disabled:text-slate-500 rounded-xl text-xs sm:text-sm font-semibold transition flex items-center justify-center gap-2 shadow"
+                className="w-full sm:w-auto px-6 py-2.5 bg-white text-slate-950 hover:bg-slate-200 disabled:bg-white/10 disabled:text-slate-500 rounded-full text-xs sm:text-sm font-bold transition flex items-center justify-center gap-2 shadow-lg shadow-white/10 active:scale-95"
               >
                 {loading ? (
                   <>
-                    <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    <span className="w-4 h-4 border-2 border-slate-900 border-t-transparent rounded-full animate-spin" />
                     <span>Merekam 10 Frame Pose...</span>
                   </>
                 ) : (
@@ -303,13 +318,13 @@ export const CalibrationPage: React.FC<CalibrationPageProps> = ({ state, deviceI
 
         {/* LANGKAH 4: Hasil Kalibrasi Berhasil */}
         {currentStep === 4 && (
-          <div className="space-y-5 animate-fadeIn">
-            <div className="bg-emerald-950/40 border border-emerald-500/40 rounded-xl p-5 text-emerald-100 flex items-start gap-3.5">
-              <div className="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-300 flex items-center justify-center text-xl shrink-0">
+          <div className="space-y-6 animate-fadeIn">
+            <div className="bg-emerald-950/40 border border-emerald-500/40 rounded-2xl p-5 text-emerald-100 flex items-start gap-3.5">
+              <div className="w-10 h-10 rounded-full bg-emerald-500/20 text-emerald-300 flex items-center justify-center text-xl shrink-0">
                 ✓
               </div>
               <div className="space-y-1">
-                <h3 className="text-base font-bold text-emerald-100">
+                <h3 className="text-base font-bold text-white">
                   Kalibrasi Berhasil Disimpan!
                 </h3>
                 <p className="text-xs text-emerald-300/90 leading-relaxed">
@@ -319,37 +334,37 @@ export const CalibrationPage: React.FC<CalibrationPageProps> = ({ state, deviceI
             </div>
 
             {/* Rincian Hasil */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <div className="bg-slate-800/60 border border-slate-700/60 rounded-xl p-4">
-                <div className="text-xs text-slate-400">Kalibrasi Timbangan (Load Cell)</div>
-                <div className="mt-2 space-y-1 text-xs">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+              <div className="bg-white/5 border border-white/5 rounded-2xl p-4">
+                <div className="text-xs text-slate-400 font-medium">Kalibrasi Timbangan (Load Cell)</div>
+                <div className="mt-2.5 space-y-1 text-xs">
                   <div className="flex justify-between">
                     <span className="text-slate-400">Nilai Tare (Titik Nol):</span>
-                    <span className="font-mono text-slate-200">
+                    <span className="font-mono text-white">
                       {emptyLoadResult?.profile?.tare ?? 124500}
                     </span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-slate-400">Faktor Skala (Scale):</span>
-                    <span className="font-mono text-slate-200">
+                    <span className="font-mono text-white">
                       {occupiedLoadResult?.profile?.scale ?? 448.5}
                     </span>
                   </div>
                 </div>
               </div>
 
-              <div className="bg-slate-800/60 border border-slate-700/60 rounded-xl p-4">
-                <div className="text-xs text-slate-400">Baseline Geometri Postur</div>
-                <div className="mt-2 space-y-1 text-xs">
+              <div className="bg-white/5 border border-white/5 rounded-2xl p-4">
+                <div className="text-xs text-slate-400 font-medium">Baseline Geometri Postur</div>
+                <div className="mt-2.5 space-y-1 text-xs">
                   <div className="flex justify-between">
                     <span className="text-slate-400">Sudut Telinga-Bahu-Pinggul:</span>
-                    <span className="font-mono text-emerald-400">
+                    <span className="font-mono text-emerald-400 font-semibold">
                       {postureResult?.baseline?.side_angle ?? 93.4}°
                     </span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-slate-400">Offset Horizontal Kepala:</span>
-                    <span className="font-mono text-slate-200">
+                    <span className="font-mono text-white">
                       {postureResult?.baseline?.head_offset ?? 0.04}
                     </span>
                   </div>
@@ -359,7 +374,7 @@ export const CalibrationPage: React.FC<CalibrationPageProps> = ({ state, deviceI
 
             {/* Peringatan Baseline Jika Ada */}
             {postureResult?.warnings && postureResult.warnings.length > 0 && (
-              <div className="p-3 bg-amber-950/60 border border-amber-500/40 rounded-xl text-xs text-amber-200">
+              <div className="p-3.5 bg-amber-950/50 border border-amber-500/30 rounded-2xl text-xs text-amber-200">
                 <strong>Catatan Kalibrasi:</strong>
                 <ul className="list-disc list-inside mt-1 space-y-0.5 text-amber-300/80">
                   {postureResult.warnings.map((w, idx) => (
@@ -369,10 +384,10 @@ export const CalibrationPage: React.FC<CalibrationPageProps> = ({ state, deviceI
               </div>
             )}
 
-            <div className="flex flex-col sm:flex-row items-center justify-end gap-2 pt-2 border-t border-slate-800">
+            <div className="flex flex-col sm:flex-row items-center justify-end gap-3 pt-3 border-t border-white/10">
               <button
                 onClick={resetWizard}
-                className="w-full sm:w-auto px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl text-xs font-medium transition"
+                className="w-full sm:w-auto px-5 py-2.5 bg-white/5 hover:bg-white/10 text-slate-300 rounded-full text-xs font-semibold transition border border-white/5"
               >
                 Kalibrasi Ulang
               </button>
@@ -380,7 +395,7 @@ export const CalibrationPage: React.FC<CalibrationPageProps> = ({ state, deviceI
               {onFinish && (
                 <button
                   onClick={onFinish}
-                  className="w-full sm:w-auto px-5 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs sm:text-sm font-semibold transition shadow"
+                  className="w-full sm:w-auto px-6 py-2.5 bg-white text-slate-950 hover:bg-slate-200 rounded-full text-xs sm:text-sm font-bold transition shadow-lg shadow-white/10 active:scale-95"
                 >
                   Kembali ke Dashboard →
                 </button>

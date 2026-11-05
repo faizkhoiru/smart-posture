@@ -140,20 +140,20 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({ deviceId }) => {
 
   if (loading) {
     return (
-      <div className="bg-slate-900/80 border border-slate-800 rounded-2xl p-8 text-center text-slate-400 text-xs">
-        <span className="w-5 h-5 border-2 border-indigo-500 border-t-transparent rounded-full animate-spin inline-block mb-2" />
-        <p>Memuat pengaturan perangkat...</p>
+      <div className="bg-[#0c0d16]/80 border border-white/10 rounded-3xl p-10 text-center text-slate-400 text-xs">
+        <span className="w-5 h-5 border-2 border-purple-500 border-t-transparent rounded-full animate-spin inline-block mb-2" />
+        <p>Memuat konfigurasi perangkat...</p>
       </div>
     );
   }
 
   if (loadError) {
     return (
-      <div className="bg-slate-900/80 border border-slate-800 rounded-2xl p-6 text-center space-y-3">
+      <div className="bg-[#0c0d16]/80 border border-white/10 rounded-3xl p-8 text-center space-y-4">
         <p className="text-rose-400 text-xs font-semibold">{loadError}</p>
         <button
           onClick={() => window.location.reload()}
-          className="px-4 py-2 bg-slate-800 text-xs text-slate-200 rounded-lg hover:bg-slate-700 transition"
+          className="px-5 py-2 bg-white text-slate-950 text-xs font-bold rounded-full hover:bg-slate-200 transition"
         >
           Muat Ulang Halaman
         </button>
@@ -162,18 +162,21 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({ deviceId }) => {
   }
 
   return (
-    <div className="space-y-4 pb-20">
-      <div className="bg-slate-900/80 border border-slate-800 rounded-2xl p-5 sm:p-6 shadow-sm">
-        <div className="border-b border-slate-800 pb-3 mb-5">
-          <h2 className="text-lg font-bold text-slate-100">Pengaturan Sistem & Toleransi Postur</h2>
-          <p className="text-xs text-slate-400 mt-0.5">
-            Sesuaikan sensitivitas sensor okupansi, batas waktu toleransi membungkuk, dan interval pengingat.
-          </p>
-        </div>
+    <div className="space-y-6 pb-28 pt-2 sm:pt-6">
+      {/* Page Title */}
+      <div className="text-center space-y-2 max-w-xl mx-auto">
+        <h1 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-white">
+          Pengaturan Sistem
+        </h1>
+        <p className="text-xs sm:text-sm text-slate-400">
+          Konfigurasi sensitivitas sensor okupansi, batas toleransi temporal, dan interval suara.
+        </p>
+      </div>
 
+      <div className="bg-[#0c0d16]/80 backdrop-blur-2xl border border-white/10 rounded-3xl p-6 sm:p-8 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.8)]">
         {/* Konfirmasi Sukses Simpan */}
         {saveSuccess && (
-          <div className="mb-4 p-3.5 bg-emerald-950/60 border border-emerald-500/40 rounded-xl text-xs text-emerald-200 flex items-center gap-2 animate-fadeIn">
+          <div className="mb-6 p-4 bg-emerald-950/60 border border-emerald-500/40 rounded-2xl text-xs text-emerald-200 flex items-center gap-2.5 animate-fadeIn">
             <span className="text-emerald-400 text-base">✓</span>
             <span>Pengaturan berhasil disimpan dan dikirim ke perangkat {deviceId}.</span>
           </div>
@@ -182,14 +185,14 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({ deviceId }) => {
         {config && (
           <form onSubmit={handleSave} className="space-y-6">
             {/* 1. Sensitivitas Okupansi Kursi */}
-            <div className="space-y-3 bg-slate-800/40 p-4 rounded-xl border border-slate-700/50">
-              <h3 className="text-xs font-semibold uppercase tracking-wider text-indigo-400">
+            <div className="space-y-4 bg-white/5 p-5 rounded-2xl border border-white/5">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-purple-300">
                 1. Sensor Okupansi Kursi (Load Cell)
               </h3>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="text-xs text-slate-300 font-medium block mb-1">
+                  <label className="text-xs text-slate-300 font-medium block mb-1.5">
                     Ambang Duduk / Occupied (kg)
                   </label>
                   <input
@@ -199,7 +202,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({ deviceId }) => {
                     onChange={(e) =>
                       setConfig({ ...config, occupied_threshold: parseFloat(e.target.value) || 0 })
                     }
-                    className="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-indigo-500 font-mono"
+                    className="w-full bg-black/50 border border-white/10 rounded-full px-4 py-2 text-xs text-white focus:outline-none focus:border-purple-500 font-mono"
                   />
                   {validationErrors.occupied_threshold && (
                     <p className="text-[11px] text-rose-400 mt-1">{validationErrors.occupied_threshold}</p>
@@ -207,7 +210,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({ deviceId }) => {
                 </div>
 
                 <div>
-                  <label className="text-xs text-slate-300 font-medium block mb-1">
+                  <label className="text-xs text-slate-300 font-medium block mb-1.5">
                     Ambang Kosong / Release (kg)
                   </label>
                   <input
@@ -217,7 +220,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({ deviceId }) => {
                     onChange={(e) =>
                       setConfig({ ...config, release_threshold: parseFloat(e.target.value) || 0 })
                     }
-                    className="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-indigo-500 font-mono"
+                    className="w-full bg-black/50 border border-white/10 rounded-full px-4 py-2 text-xs text-white focus:outline-none focus:border-purple-500 font-mono"
                   />
                   {validationErrors.release_threshold && (
                     <p className="text-[11px] text-rose-400 mt-1">{validationErrors.release_threshold}</p>
@@ -226,7 +229,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({ deviceId }) => {
               </div>
 
               <div>
-                <label className="text-xs text-slate-300 font-medium block mb-1">
+                <label className="text-xs text-slate-300 font-medium block mb-1.5">
                   Debounce Perubahan Okupansi (ms)
                 </label>
                 <input
@@ -236,20 +239,20 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({ deviceId }) => {
                   onChange={(e) =>
                     setConfig({ ...config, debounce_ms: parseInt(e.target.value) || 0 })
                   }
-                  className="w-full sm:w-1/2 bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-indigo-500 font-mono"
+                  className="w-full sm:w-1/2 bg-black/50 border border-white/10 rounded-full px-4 py-2 text-xs text-white focus:outline-none focus:border-purple-500 font-mono"
                 />
               </div>
             </div>
 
             {/* 2. Logika Deteksi Postur & Toleransi */}
-            <div className="space-y-3 bg-slate-800/40 p-4 rounded-xl border border-slate-700/50">
-              <h3 className="text-xs font-semibold uppercase tracking-wider text-indigo-400">
+            <div className="space-y-4 bg-white/5 p-5 rounded-2xl border border-white/5">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-purple-300">
                 2. Deteksi Postur & Toleransi Temporal
               </h3>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="text-xs text-slate-300 font-medium block mb-1">
+                  <label className="text-xs text-slate-300 font-medium block mb-1.5">
                     Durasi Toleransi Membungkuk (detik)
                   </label>
                   <input
@@ -258,16 +261,16 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({ deviceId }) => {
                     onChange={(e) =>
                       setConfig({ ...config, tolerance_seconds: parseInt(e.target.value) || 0 })
                     }
-                    className="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-indigo-500 font-mono"
+                    className="w-full bg-black/50 border border-white/10 rounded-full px-4 py-2 text-xs text-white focus:outline-none focus:border-purple-500 font-mono"
                   />
-                  <p className="text-[10px] text-slate-400 mt-0.5">Waktu warning sebelum bad_posture.</p>
+                  <p className="text-[10px] text-slate-400 mt-1">Batas waktu peringatan sebelum status bad_posture.</p>
                   {validationErrors.tolerance_seconds && (
                     <p className="text-[11px] text-rose-400 mt-1">{validationErrors.tolerance_seconds}</p>
                   )}
                 </div>
 
                 <div>
-                  <label className="text-xs text-slate-300 font-medium block mb-1">
+                  <label className="text-xs text-slate-300 font-medium block mb-1.5">
                     Minimal Frame Warning (frame)
                   </label>
                   <input
@@ -276,15 +279,15 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({ deviceId }) => {
                     onChange={(e) =>
                       setConfig({ ...config, warning_min_frames: parseInt(e.target.value) || 0 })
                     }
-                    className="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-indigo-500 font-mono"
+                    className="w-full bg-black/50 border border-white/10 rounded-full px-4 py-2 text-xs text-white focus:outline-none focus:border-purple-500 font-mono"
                   />
-                  <p className="text-[10px] text-slate-400 mt-0.5">Mencegah alarm dari 1 frame anomali.</p>
+                  <p className="text-[10px] text-slate-400 mt-1">Mencegah alarm palsu dari 1 frame anomali.</p>
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="text-xs text-slate-300 font-medium block mb-1">
+                  <label className="text-xs text-slate-300 font-medium block mb-1.5">
                     Orientasi Kamera (View Mode)
                   </label>
                   <select
@@ -292,7 +295,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({ deviceId }) => {
                     onChange={(e) =>
                       setConfig({ ...config, view_mode: e.target.value as 'side' | 'front' })
                     }
-                    className="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-indigo-500"
+                    className="w-full bg-black/50 border border-white/10 rounded-full px-4 py-2 text-xs text-white focus:outline-none focus:border-purple-500"
                   >
                     <option value="side">Tampak Samping (Side View)</option>
                     <option value="front">Tampak Depan (Front View)</option>
@@ -300,7 +303,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({ deviceId }) => {
                 </div>
 
                 <div>
-                  <label className="text-xs text-slate-300 font-medium block mb-1">
+                  <label className="text-xs text-slate-300 font-medium block mb-1.5">
                     Minimal Keypoint Visibility (0.1–0.9)
                   </label>
                   <input
@@ -312,20 +315,20 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({ deviceId }) => {
                     onChange={(e) =>
                       setConfig({ ...config, min_visibility: parseFloat(e.target.value) || 0.5 })
                     }
-                    className="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-indigo-500 font-mono"
+                    className="w-full bg-black/50 border border-white/10 rounded-full px-4 py-2 text-xs text-white focus:outline-none focus:border-purple-500 font-mono"
                   />
                 </div>
               </div>
             </div>
 
             {/* 3. Pengaturan Audio & Pengingat */}
-            <div className="space-y-3 bg-slate-800/40 p-4 rounded-xl border border-slate-700/50">
-              <h3 className="text-xs font-semibold uppercase tracking-wider text-indigo-400">
+            <div className="space-y-4 bg-white/5 p-5 rounded-2xl border border-white/5">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-purple-300">
                 3. Interval Pengingat Suara
               </h3>
 
               <div>
-                <label className="text-xs text-slate-300 font-medium block mb-1">
+                <label className="text-xs text-slate-300 font-medium block mb-1.5">
                   Interval Pengulangan Suara (detik)
                 </label>
                 <input
@@ -334,10 +337,10 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({ deviceId }) => {
                   onChange={(e) =>
                     setConfig({ ...config, remind_interval: parseInt(e.target.value) || 60 })
                   }
-                  className="w-full sm:w-1/2 bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-indigo-500 font-mono"
+                  className="w-full sm:w-1/2 bg-black/50 border border-white/10 rounded-full px-4 py-2 text-xs text-white focus:outline-none focus:border-purple-500 font-mono"
                 />
-                <p className="text-[10px] text-slate-400 mt-0.5">
-                  Jeda waktu sebelum pengingat suara berbunyi kembali jika postur belum diperbaiki.
+                <p className="text-[10px] text-slate-400 mt-1">
+                  Jeda waktu sebelum pengingat berbunyi ulang bila postur belum dikoreksi.
                 </p>
                 {validationErrors.remind_interval && (
                   <p className="text-[11px] text-rose-400 mt-1">{validationErrors.remind_interval}</p>
@@ -349,11 +352,11 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({ deviceId }) => {
               <button
                 type="submit"
                 disabled={saving}
-                className="w-full sm:w-auto px-6 py-2.5 bg-indigo-600 hover:bg-indigo-500 disabled:bg-slate-800 text-white disabled:text-slate-500 rounded-xl text-xs sm:text-sm font-semibold transition flex items-center justify-center gap-2 shadow"
+                className="w-full sm:w-auto px-7 py-2.5 bg-white text-slate-950 hover:bg-slate-200 disabled:bg-white/10 disabled:text-slate-500 rounded-full text-xs sm:text-sm font-bold transition flex items-center justify-center gap-2 shadow-lg shadow-white/10 active:scale-95"
               >
                 {saving ? (
                   <>
-                    <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    <span className="w-4 h-4 border-2 border-slate-900 border-t-transparent rounded-full animate-spin" />
                     <span>Menyimpan Pengaturan...</span>
                   </>
                 ) : (
@@ -365,31 +368,31 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({ deviceId }) => {
         )}
 
         {/* Bagian Uji Suara & Privasi */}
-        <div className="mt-8 pt-6 border-t border-slate-800 space-y-4">
-          <div className="bg-slate-800/30 border border-slate-800 rounded-xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+        <div className="mt-8 pt-6 border-t border-white/10 space-y-4">
+          <div className="bg-white/5 border border-white/5 rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
             <div>
-              <h4 className="text-xs font-semibold text-slate-200">Uji Pengucapan Web Speech API (id-ID)</h4>
-              <p className="text-[11px] text-slate-400">Tes suara pengingat ramah berbahasa Indonesia.</p>
-              {audioTestStatus && <p className="text-[11px] text-indigo-400 mt-1">{audioTestStatus}</p>}
+              <h4 className="text-xs font-bold text-white">Uji Pengucapan Web Speech API (id-ID)</h4>
+              <p className="text-[11px] text-slate-400 mt-0.5">Tes suara pengingat ramah berbahasa Indonesia.</p>
+              {audioTestStatus && <p className="text-[11px] text-purple-300 mt-1">{audioTestStatus}</p>}
             </div>
             <button
               type="button"
               onClick={testAudioVoice}
-              className="px-3.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg text-xs font-medium border border-slate-700 shrink-0 transition"
+              className="px-4 py-1.5 bg-white/10 hover:bg-white/20 text-white rounded-full text-xs font-semibold border border-white/10 shrink-0 transition"
             >
               🔊 Uji Suara
             </button>
           </div>
 
-          <div className="bg-slate-800/30 border border-slate-800 rounded-xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+          <div className="bg-white/5 border border-white/5 rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
             <div>
-              <h4 className="text-xs font-semibold text-slate-200">Lembar Persetujuan Privasi</h4>
-              <p className="text-[11px] text-slate-400">Buka kembali dialog persetujuan pemantauan ergonomis.</p>
+              <h4 className="text-xs font-bold text-white">Lembar Persetujuan Privasi</h4>
+              <p className="text-[11px] text-slate-400 mt-0.5">Buka kembali dialog persetujuan pemantauan ergonomis.</p>
             </div>
             <button
               type="button"
               onClick={resetConsent}
-              className="px-3.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-xs font-medium border border-slate-700 shrink-0 transition"
+              className="px-4 py-1.5 bg-white/10 hover:bg-white/20 text-slate-300 rounded-full text-xs font-semibold border border-white/10 shrink-0 transition"
             >
               Tinjau Persetujuan
             </button>

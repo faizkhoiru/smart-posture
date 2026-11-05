@@ -97,34 +97,46 @@ export const HistoryPage: React.FC<HistoryPageProps> = ({ deviceId }) => {
   };
 
   return (
-    <div className="space-y-4 pb-20">
-      <div className="bg-slate-900/80 border border-slate-800 rounded-2xl p-5 sm:p-6 shadow-sm">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-b border-slate-800 pb-4 mb-4">
+    <div className="space-y-6 pb-28 pt-2 sm:pt-6">
+      {/* Page Title */}
+      <div className="text-center space-y-2 max-w-xl mx-auto">
+        <h1 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-white">
+          Riwayat & Aktivitas
+        </h1>
+        <p className="text-xs sm:text-sm text-slate-400">
+          Histori durasi okupansi, keteraturan postur ergonomis, dan arsip notifikasi peringatan.
+        </p>
+      </div>
+
+      <div className="bg-[#0c0d16]/80 backdrop-blur-2xl border border-white/10 rounded-3xl p-6 sm:p-8 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.8)]">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-white/10 pb-5 mb-6">
           <div>
-            <h2 className="text-lg font-bold text-slate-100">Riwayat Sesi & Event Postur</h2>
+            <h2 className="text-base sm:text-lg font-bold text-white tracking-tight">
+              {activeTab === 'sessions' ? 'Timeline Sesi Duduk' : 'Log Riwayat Peringatan'}
+            </h2>
             <p className="text-xs text-slate-400 mt-0.5">
-              Pantau histori durasi duduk, keteraturan postur ergonomis, dan log peringatan.
+              Data dicatat otomatis secara berkala oleh ESP32 & pose backend.
             </p>
           </div>
 
-          {/* Sub Tab Switcher */}
-          <div className="flex p-1 bg-slate-800/80 rounded-xl border border-slate-700/60 self-start sm:self-auto">
+          {/* Sub Tab Switcher (Stitch Pill Style) */}
+          <div className="flex p-1 bg-black/40 rounded-full border border-white/10 self-start sm:self-auto text-xs">
             <button
               onClick={() => setActiveTab('sessions')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-medium transition ${
+              className={`px-4 py-1.5 rounded-full font-semibold transition-all ${
                 activeTab === 'sessions'
-                  ? 'bg-indigo-600 text-white shadow'
-                  : 'text-slate-400 hover:text-slate-200'
+                  ? 'bg-white text-slate-950 shadow-md shadow-white/10'
+                  : 'text-slate-400 hover:text-white'
               }`}
             >
               Sesi Duduk
             </button>
             <button
               onClick={() => setActiveTab('events')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-medium transition ${
+              className={`px-4 py-1.5 rounded-full font-semibold transition-all ${
                 activeTab === 'events'
-                  ? 'bg-indigo-600 text-white shadow'
-                  : 'text-slate-400 hover:text-slate-200'
+                  ? 'bg-white text-slate-950 shadow-md shadow-white/10'
+                  : 'text-slate-400 hover:text-white'
               }`}
             >
               Log Event Postur
@@ -136,31 +148,31 @@ export const HistoryPage: React.FC<HistoryPageProps> = ({ deviceId }) => {
         {activeTab === 'sessions' && (
           <div className="space-y-4 animate-fadeIn">
             {sessionsLoading ? (
-              <div className="py-12 text-center text-xs text-slate-400 space-y-2">
-                <span className="w-5 h-5 border-2 border-indigo-500 border-t-transparent rounded-full animate-spin inline-block" />
-                <p>Memuat daftar sesi...</p>
+              <div className="py-14 text-center text-xs text-slate-400 space-y-2">
+                <span className="w-5 h-5 border-2 border-purple-500 border-t-transparent rounded-full animate-spin inline-block" />
+                <p>Memuat daftar sesi duduk...</p>
               </div>
             ) : sessionsError ? (
-              <div className="p-6 bg-slate-800/40 rounded-xl text-center space-y-3 border border-slate-700/40">
+              <div className="p-6 bg-white/5 rounded-2xl text-center space-y-3 border border-white/5">
                 <p className="text-xs text-rose-400">{sessionsError}</p>
                 <button
                   onClick={loadSessions}
-                  className="px-4 py-1.5 bg-slate-700 text-xs text-slate-200 rounded-lg hover:bg-slate-600 transition"
+                  className="px-4 py-2 bg-white/10 text-xs text-white rounded-full hover:bg-white/20 transition"
                 >
                   Coba Lagi
                 </button>
               </div>
             ) : sessions.length === 0 ? (
               /* Empty State Ramah */
-              <div className="py-12 text-center space-y-2.5">
+              <div className="py-14 text-center space-y-2.5">
                 <div className="text-3xl">🪑</div>
-                <h4 className="text-sm font-semibold text-slate-200">Belum Ada Sesi Duduk</h4>
+                <h4 className="text-sm font-bold text-white">Belum Ada Sesi Duduk</h4>
                 <p className="text-xs text-slate-400 max-w-sm mx-auto">
                   Sesi duduk akan otomatis dicatat setiap kali Anda menduduki kursi dan diakhiri saat Anda berdiri.
                 </p>
               </div>
             ) : (
-              <div className="space-y-3">
+              <div className="space-y-3.5">
                 {sessions.map((session) => {
                   const goodPct = Math.round(
                     (session.good_s / (session.total_sit_s || 1)) * 100
@@ -168,19 +180,19 @@ export const HistoryPage: React.FC<HistoryPageProps> = ({ deviceId }) => {
                   return (
                     <div
                       key={session.id}
-                      className="bg-slate-800/50 border border-slate-700/50 rounded-xl p-4 transition hover:border-slate-600/70"
+                      className="bg-white/5 border border-white/5 rounded-2xl p-5 transition-all hover:border-white/15"
                     >
-                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
                         <div>
                           <div className="flex items-center gap-2">
-                            <span className="text-xs font-bold text-slate-200">
+                            <span className="text-xs font-bold text-white">
                               Sesi #{session.id}
                             </span>
                             <span className="text-[11px] text-slate-400">
                               • {formatDate(session.started_at)}
                             </span>
                           </div>
-                          <div className="text-xs text-slate-400 mt-1">
+                          <div className="text-xs text-slate-400 mt-1.5">
                             Total Duduk:{' '}
                             <strong className="text-slate-200">
                               {formatDuration(session.total_sit_s)}
@@ -202,17 +214,17 @@ export const HistoryPage: React.FC<HistoryPageProps> = ({ deviceId }) => {
                           >
                             {goodPct}% Tegak
                           </span>
-                          <div className="text-[11px] text-slate-400">
+                          <div className="text-[11px] text-slate-400 mt-0.5">
                             {session.alert_count}x Peringatan
                           </div>
                         </div>
                       </div>
 
                       {/* Bar Visual Rasio Postur */}
-                      <div className="w-full h-2 rounded-full bg-slate-900 mt-3 overflow-hidden flex">
+                      <div className="w-full h-1.5 rounded-full bg-black/50 mt-3.5 overflow-hidden flex">
                         <div
                           style={{ width: `${goodPct}%` }}
-                          className="bg-emerald-500 h-full transition-all"
+                          className="bg-emerald-400 h-full transition-all shadow-[0_0_8px_#34d399]"
                           title={`Postur Baik: ${goodPct}%`}
                         />
                         <div
@@ -226,19 +238,19 @@ export const HistoryPage: React.FC<HistoryPageProps> = ({ deviceId }) => {
                 })}
 
                 {/* Kontrol Pagination Sesi */}
-                <div className="flex items-center justify-between pt-2 text-xs text-slate-400">
+                <div className="flex items-center justify-between pt-3 text-xs text-slate-400">
                   <button
                     onClick={() => setSessionPage((prev) => Math.max(0, prev - 1))}
                     disabled={sessionPage === 0}
-                    className="px-3 py-1.5 bg-slate-800 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-slate-700 rounded-lg transition"
+                    className="px-4 py-2 bg-white/5 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-white/10 rounded-full transition text-slate-200 border border-white/5"
                   >
                     ← Sebelumnya
                   </button>
-                  <span>Halaman {sessionPage + 1}</span>
+                  <span className="font-mono">Halaman {sessionPage + 1}</span>
                   <button
                     onClick={() => setSessionPage((prev) => prev + 1)}
                     disabled={sessions.length < sessionPageSize}
-                    className="px-3 py-1.5 bg-slate-800 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-slate-700 rounded-lg transition"
+                    className="px-4 py-2 bg-white/5 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-white/10 rounded-full transition text-slate-200 border border-white/5"
                   >
                     Berikutnya →
                   </button>
@@ -253,7 +265,7 @@ export const HistoryPage: React.FC<HistoryPageProps> = ({ deviceId }) => {
           <div className="space-y-4 animate-fadeIn">
             {/* Filter Bar Status */}
             <div className="flex items-center gap-1.5 flex-wrap">
-              <span className="text-xs text-slate-400 mr-1">Filter:</span>
+              <span className="text-xs text-slate-400 mr-1.5">Filter:</span>
               {[
                 { key: '', label: 'Semua' },
                 { key: 'good_posture', label: 'Baik' },
@@ -269,10 +281,10 @@ export const HistoryPage: React.FC<HistoryPageProps> = ({ deviceId }) => {
                       setEventFilter(f.key);
                       setEventPage(0);
                     }}
-                    className={`px-2.5 py-1 rounded-lg text-xs font-medium transition ${
+                    className={`px-3 py-1 rounded-full text-xs font-semibold transition-all ${
                       isSelected
-                        ? 'bg-indigo-600 text-white'
-                        : 'bg-slate-800/80 text-slate-400 hover:text-slate-200'
+                        ? 'bg-white text-slate-950 shadow-md shadow-white/10'
+                        : 'bg-white/5 text-slate-400 hover:text-white border border-white/5'
                     }`}
                   >
                     {f.label}
@@ -282,52 +294,52 @@ export const HistoryPage: React.FC<HistoryPageProps> = ({ deviceId }) => {
             </div>
 
             {eventsLoading ? (
-              <div className="py-12 text-center text-xs text-slate-400 space-y-2">
-                <span className="w-5 h-5 border-2 border-indigo-500 border-t-transparent rounded-full animate-spin inline-block" />
+              <div className="py-14 text-center text-xs text-slate-400 space-y-2">
+                <span className="w-5 h-5 border-2 border-purple-500 border-t-transparent rounded-full animate-spin inline-block" />
                 <p>Memuat log event postur...</p>
               </div>
             ) : eventsError ? (
-              <div className="p-6 bg-slate-800/40 rounded-xl text-center space-y-3 border border-slate-700/40">
+              <div className="p-6 bg-white/5 rounded-2xl text-center space-y-3 border border-white/5">
                 <p className="text-xs text-rose-400">{eventsError}</p>
                 <button
                   onClick={loadEvents}
-                  className="px-4 py-1.5 bg-slate-700 text-xs text-slate-200 rounded-lg hover:bg-slate-600 transition"
+                  className="px-4 py-2 bg-white/10 text-xs text-white rounded-full hover:bg-white/20 transition"
                 >
                   Coba Lagi
                 </button>
               </div>
             ) : events.length === 0 ? (
               /* Empty State Ramah */
-              <div className="py-12 text-center space-y-2.5">
+              <div className="py-14 text-center space-y-2.5">
                 <div className="text-3xl">📝</div>
-                <h4 className="text-sm font-semibold text-slate-200">Tidak Ada Log Event</h4>
+                <h4 className="text-sm font-bold text-white">Tidak Ada Log Event</h4>
                 <p className="text-xs text-slate-400 max-w-sm mx-auto">
                   Belum ada event postur yang sesuai dengan filter yang dipilih saat ini.
                 </p>
               </div>
             ) : (
-              <div className="space-y-2.5">
+              <div className="space-y-3">
                 {events.map((evt) => {
                   const info = getPostureStatusInfo(evt.status, 'ok');
                   return (
                     <div
                       key={evt.id}
-                      className="bg-slate-800/40 border border-slate-700/40 rounded-xl p-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2"
+                      className="bg-white/5 border border-white/5 rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 hover:border-white/15 transition-all"
                     >
                       <div className="flex items-start gap-3">
                         <span
-                          className={`px-2.5 py-0.5 rounded-full text-[11px] font-medium border shrink-0 ${info.colorClasses}`}
+                          className={`px-3 py-0.5 rounded-full text-[11px] font-semibold border shrink-0 ${info.colorClasses}`}
                         >
                           {info.label}
                         </span>
                         <div>
                           <div className="text-xs text-slate-300">
-                            Durasi: <strong className="text-slate-100">{evt.durasi} detik</strong> •{' '}
+                            Durasi: <strong className="text-white">{evt.durasi} detik</strong> •{' '}
                             <span className="font-mono text-slate-400">
                               Akurasi: {Math.round(evt.confidence * 100)}%
                             </span>
                           </div>
-                          <div className="text-[11px] text-slate-400 mt-0.5">
+                          <div className="text-[11px] text-slate-400 mt-1">
                             {formatDate(evt.timestamp)}
                           </div>
                         </div>
@@ -335,7 +347,7 @@ export const HistoryPage: React.FC<HistoryPageProps> = ({ deviceId }) => {
 
                       <div className="text-right text-[11px] text-slate-400 self-end sm:self-center">
                         {evt.acknowledged_at ? (
-                          <span className="text-emerald-400 font-medium">✓ Diakui Pengguna</span>
+                          <span className="text-emerald-400 font-semibold">✓ Diakui Pengguna</span>
                         ) : evt.status === 'bad_posture' ? (
                           <span className="text-amber-400">Belum di-ACK</span>
                         ) : (
@@ -347,19 +359,19 @@ export const HistoryPage: React.FC<HistoryPageProps> = ({ deviceId }) => {
                 })}
 
                 {/* Kontrol Pagination Event */}
-                <div className="flex items-center justify-between pt-2 text-xs text-slate-400">
+                <div className="flex items-center justify-between pt-3 text-xs text-slate-400">
                   <button
                     onClick={() => setEventPage((prev) => Math.max(0, prev - 1))}
                     disabled={eventPage === 0}
-                    className="px-3 py-1.5 bg-slate-800 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-slate-700 rounded-lg transition"
+                    className="px-4 py-2 bg-white/5 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-white/10 rounded-full transition text-slate-200 border border-white/5"
                   >
                     ← Sebelumnya
                   </button>
-                  <span>Halaman {eventPage + 1}</span>
+                  <span className="font-mono">Halaman {eventPage + 1}</span>
                   <button
                     onClick={() => setEventPage((prev) => prev + 1)}
                     disabled={events.length < eventPageSize}
-                    className="px-3 py-1.5 bg-slate-800 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-slate-700 rounded-lg transition"
+                    className="px-4 py-2 bg-white/5 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-white/10 rounded-full transition text-slate-200 border border-white/5"
                   >
                     Berikutnya →
                   </button>
